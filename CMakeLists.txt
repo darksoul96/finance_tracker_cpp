@@ -8,15 +8,31 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Specify the path to the GLFW build directory
 set(GLFW_BUILD_DIR ${CMAKE_SOURCE_DIR}/glfw_build)
 
-
-# Add GLFW to the project
-add_subdirectory(${GLFW_BUILD_DIR} glfw)
-
 add_executable(FinanceTracker main.cpp)
 
-# Include GLFW headers
-target_include_directories(FinanceTracker PRIVATE ${GLFW_BUILD_DIR}/include)
+# OS-specific configurations
+if (WIN32)
+    # Windows specific settings
+    set(GLFW_INCLUDE_DIR ${GLFW_BUILD_DIR}/include)
+    set(GLFW_LIB_DIR ${GLFW_BUILD_DIR}/lib-mingw-w64)
 
-# Link GLFW libraries
-target_link_libraries(FinanceTracker PRIVATE glfw)
+    # Include GLFW headers
+    target_include_directories(FinanceTracker PRIVATE ${GLFW_INCLUDE_DIR})
 
+    # Link GLFW libraries
+    target_link_libraries(FinanceTracker PRIVATE ${GLFW_LIB_DIR}/libglfw3.a)
+    target_link_libraries(FinanceTracker PRIVATE opengl32)
+elseif (UNIX)
+
+    # Linux specific settings
+    add_subdirectory(${GLFW_BUILD_DIR})
+
+    # Include GLFW headers
+    target_include_directories(FinanceTracker PRIVATE ${GLFW_BUILD_DIR}/include)
+
+
+    # Link GLFW libraries
+    target_link_libraries(FinanceTracker PRIVATE glfw)
+    # find_package(OpenGL REQUIRED)
+    # target_link_libraries(FinanceTracker PRIVATE ${OPENGL_LIBRARIES})
+endif()
