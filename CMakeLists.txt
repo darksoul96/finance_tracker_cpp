@@ -5,11 +5,26 @@ project(FinanceTracker VERSION 0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+#add source files
+set(SOURCES
+  src/database_module.cpp
+  main.cpp
+)
+
+
+#add header files
+set(
+  HEADERS
+  src/transaction_module.h
+  src/database_module.h
+)
+
+
 # Specify the path to the GLFW build directory
 set(GLFW_BUILD_DIR ${CMAKE_SOURCE_DIR}/glfw_build)
 set(SQLITE3_DIR ${CMAKE_SOURCE_DIR}/sqlite)
 
-add_executable(FinanceTracker main.cpp)
+add_executable(FinanceTracker ${SOURCES} ${HEADERS})
 
 #add SQLite3 source files
 add_library(sqlite3 STATIC ${SQLITE3_DIR}/sqlite3.c)
