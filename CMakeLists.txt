@@ -17,6 +17,7 @@ set(
   HEADERS
   src/transaction_module.h
   src/database_module.h
+  src/stb_image.h
 )
 
 

@@ -1,21 +1,11 @@
 
-#include "src/database_module.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "src/stb_image.h"
+#include "src/transaction_module.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <sqlite3.h>
 
 int main(int argc, char *argv[]) {
-
-  sqlite3 *db;
-  int rc = sqlite3_open("finance.db", &db);
-
-  if (rc) {
-    std::cerr << "Failed to open database: " << sqlite3_errmsg(db);
-    return -1;
-  }
-
-  DB::CreateTransactionsTable(db);
-  DB::SelectTransactions(db);
 
   if (!glfwInit()) {
     std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -24,6 +14,12 @@ int main(int argc, char *argv[]) {
 
   GLFWwindow *window =
       glfwCreateWindow(1080, 720, "Finance Tracker", NULL, NULL);
+
+  GLFWimage images[1];
+  images[0].pixels = stbi_load("expenseicon.png", &images[0].width,
+                               &images[0].height, 0, 4); // rgba channels
+  glfwSetWindowIcon(window, 1, images);
+  stbi_image_free(images[0].pixels);
 
   if (!window) {
     glfwTerminate();
@@ -37,8 +33,6 @@ int main(int argc, char *argv[]) {
 
   glfwDestroyWindow(window);
   glfwTerminate();
-
-  sqlite3_close(db);
 
   return 0;
 }

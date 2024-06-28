@@ -5,14 +5,15 @@
 class Transaction {
 public:
   int id;
+  static int current_id;
   std::string title;
   std::string date;
   std::string category;
   double amount;
 
-  Transaction(int id, std::string title, std::string date, std::string category,
+  Transaction(std::string title, std::string date, std::string category,
               double amount) {
-    this->id = id;
+    this->id = this->current_id++;
     this->title = title;
     this->date = date;
     this->category = category;
